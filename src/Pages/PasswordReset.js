@@ -9,11 +9,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-
 import { auth } from '../App/firebase';
 
 function Copyright(props) {
@@ -28,25 +27,19 @@ function Copyright(props) {
   );
 }
 
-const Register = () => {
-  const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = React.useState('');
-
+const forgotPassword = (Email) => {
   const handleSubmit = async (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const email = data.get('email');
-      const password = data.get('password');
-
-      try {
-          const {user} = await createUserWithEmailAndPassword(auth, email, password);
-          console.log(user);
-          navigate("/");
-      } catch (error) {
-          setErrorMessage(error.message);
-      }
-  };
-
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+  console.log("reset email sent to " + Email);
+  sendPasswordResetEmail(auth, Email, null)
+      .then(() => {
+          alert("reset email sent to " + Email);
+      })
+      .catch(function (e) {
+          console.log(e);
+      });
+    }
   return (
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -78,8 +71,8 @@ const Register = () => {
           color: "red"
           }}
           >
-
-            <Link href="/" 
+            
+            <Link href="/Login" 
             style={{
               textDecoration: "none",
               color: "black",
@@ -88,9 +81,11 @@ const Register = () => {
               fontSize: 20
             }}>
 
+
             <ArrowBackIcon sx={{
               marginRight: 6
-              }} />
+              }}>
+              </ArrowBackIcon>
               </Link>
         </Box>
           <Box
@@ -102,11 +97,14 @@ const Register = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'red' }}>
-              <ContentPasteIcon/>
+            <Avatar sx={{ m: 1, bgcolor: 'orange', backgroundSize: 20}}>
+              <RotateLeftIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Register
+            <Typography fontSize={30} fontWeight={"bold"}>
+              Password Reset
+            </Typography>
+            <Typography fontSize={15} marginBottom={2}>
+                Please insert your email to reset the password
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -119,30 +117,18 @@ const Register = () => {
                 autoComplete="email"
                 autoFocus
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <Typography color="red">{errorMessage}</Typography>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Register
+                Send Request
               </Button>
               <Grid container>
+                <Grid item xs>
+                </Grid>
                 <Grid item>
-                  <Link href="/login" variant="body2">
-                    {"Login Instead"}
-                  </Link>
                 </Grid>
               </Grid>
               <Copyright sx={{ paddingTop: 15 }} />
@@ -153,4 +139,4 @@ const Register = () => {
   );
 }
 
-export default Register;
+export default forgotPassword;

@@ -61,7 +61,37 @@ export default class CardWithFilter extends Component {
   };
 
   render() {
-    const renderA = this.state.arrypost;
+    const renderA = this.state.arrypost.map((berita) => (
+    <Box sx={{ padding: "1em", margin: "auto" }}>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardMedia
+        component="img"
+        alt="green iguana"
+        height="140"
+        image={berita.thumb}
+      />
+      <CardContent sx={{ height: "auto" }}>
+        <Typography gutterBottom component="div">
+          {berita.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {berita.desc.substring(0, 190)}...
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ textAlign: "center", alignContent: "center" }}>
+        <Button size="small" variant="outlined">
+          {" "}
+          <Link
+            style={{ textDecoration: "none" }}
+            to={`/detail/${berita.key}`}
+          >
+            Selengkapnya
+          </Link>
+        </Button>
+      </CardActions>
+    </Card>
+  </Box>
+));
     const renderAll = this.state.filterberita.map((berita) => (
       <Box sx={{ padding: "1em", margin: "auto" }}>
         <Card sx={{ maxWidth: 345 }}>

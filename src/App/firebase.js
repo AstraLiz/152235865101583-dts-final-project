@@ -26,7 +26,7 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBfpwcgRMUh20zpMr2pa_SXArl_pJA2204",
+  apiKey: "AIzaSyBfpwcgRMUh20zpMr2pa_SXArl_pJA2204",   // process.env.REACT_APP_FIREBASE_KEY
   authDomain: "final-project-react-rea2b.firebaseapp.com",
   projectId: "final-project-react-rea2b",
   storageBucket: "final-project-react-rea2b.appspot.com",
@@ -97,6 +97,7 @@ const sendPasswordReset = async (email) => {
 const userLogout = () => {
   signOut(auth);
 };
+
 
 export {
   auth,

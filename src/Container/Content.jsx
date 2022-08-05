@@ -1,35 +1,33 @@
 import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import news from "../App/axios";
+import News from "../App/news";
 import NewsItem from "../Component/NewsItem";
-export default function CardContent() {
-  const [berita, setBerita] = useState([]);
+
+
+
+export default function Content() {
+  const [news, setNews] = useState([]);
   useEffect(() => {
-    const fetchDataBerita = async () => {
+    const fetchNewsData = async () => {
       try {
-        // Gunakan instance tmdb di sini
-        const responseDariNews = await news.get(
-          // Nah di sini kita tidak perlu menuliskan terlalu panjang lagi
-          // `${"/top-headlines?country=id&category=" + type}`
-          "/api/games"
+        const responseFromNews = await News.get(
+          `/api/games`
         );
-        // Jangan lupa set statenya
-        // Perhatikan di sini responseDariTMDB ada .data (response schema axios)
-        setBerita(responseDariNews.data);
+        setNews(responseFromNews.data);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchDataBerita();
+    fetchNewsData();
   });
   return (
     <div>
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         
-        {berita.map((berita, index) => {
+        {news.map((news, index) => {
           return (
             <Box key={index} sx={{padding:'1em', margin:'auto'}}>
-              <NewsItem berita={berita} />
+              <NewsItem news={news} />
             </Box>
           );
         })}

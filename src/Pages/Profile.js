@@ -4,8 +4,12 @@ import Footer from "../Component/Footer";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { db } from "../App/firebase";
 import { collection , query, orderBy , onSnapshot, addDoc,serverTimestamp} from 'firebase/firestore';
-const q=query(collection(db,'todos'),orderBy('timestamp','desc'));
-export default function ProfilePage() {
+
+
+
+
+const q = query(collection(db,'todos'),orderBy('timestamp','desc'));
+export default function Profile() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
   useEffect(() => {
@@ -30,7 +34,6 @@ export default function ProfilePage() {
     <div>
       <Navbar />
       <Paper>
-        haha 
         <Box>
           <form>
             <TextField
@@ -47,9 +50,9 @@ export default function ProfilePage() {
             </Button>
           </form>
         </Box>
-        {todos.map((berita) => {
+        {todos.map((news) => {
           return (
-            <Box sx={{ padding: "1em", margin: "auto" }}>cek : {berita.id}</Box>
+            <Box sx={{ padding: "1em", margin: "auto" }}>check : {news.id}</Box>
           );
         })}
       </Paper>

@@ -1,17 +1,9 @@
 import React from "react";
-import axios from "axios";
-import news from "../App/axios";
+import News from "../App/news";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../Container/Navbar";
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  Paper,
   Typography,
 } from "@mui/material";
 import Footer from "../Component/Footer";
@@ -19,11 +11,11 @@ import NewsCard from "../Component/NewsCard";
 
 export default function Detail() {
   let params = useParams();
-  const BeritaID = params.BeritaID;
-  const BeritaID2 = params.BeritaID2;
-  const BeritaID3 = params.BeritaID3;
-  const BeritaID4 = params.BeritaID4;
-  const [berita, setBerita] = useState([]);
+  const NewsID = params.NewsID;
+  const NewsID2 = params.NewsID2;
+  const NewsID3 = params.NewsID3;
+  const NewsID4 = params.NewsID4;
+  const [news, setNews] = useState([]);
   var rows = [];
   for (var i = 1; i < 13; i++) {
     // note: we are adding a key prop here to allow react to uniquely identify each
@@ -32,25 +24,25 @@ export default function Detail() {
   }
 
   useEffect(() => {
-    const fetchDataBerita = async () => {
+    const fetchNewsData = async () => {
       try {
-        const responseDariNews = await news.get(
+        const responseFromNews = await News.get(
           // Nah di sini kita tidak perlu menuliskan terlalu panjang lagi
-          `/api/detail/${BeritaID}/${BeritaID2}/${BeritaID3}/${BeritaID4}`
+          `/api/detail/${NewsID}/${NewsID2}/${NewsID3}/${NewsID4}`
         );
         // Jangan lupa set statenya
         // Perhatikan di sini responseDariTMDB ada .data (response schema axios)
-        setBerita(responseDariNews.data.results);
+        setNews(responseFromNews.data.results);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchDataBerita()}, [BeritaID, BeritaID2, BeritaID3, BeritaID4]);
+    fetchNewsData()}, [NewsID, NewsID2, NewsID3, NewsID4]);
 
   return (
     <>
     <Navbar/>
-      <NewsCard berita={berita} />
+      <NewsCard news={news} />
         <Footer/>
     </>
   );

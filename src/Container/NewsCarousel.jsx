@@ -1,73 +1,80 @@
 import Carousel from "react-material-ui-carousel";
 import {
   Paper,
-  Button,
   Typography,
   Card,
   Box,
   CardContent,
   CardMedia,
-  Link,
 } from "@mui/material";
-import news from "../App/axios";
+import News from "../App/news";
 import { useEffect, useState } from "react";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
-export default function CarouselNews() {
-  const [berita, setBerita] = useState([]);
+export default function NewsCarousel() {
+  const [news, setNews] = useState([]);
   useEffect(() => {
-    const fetchDataBerita = async () => {
+    const fetchNewsData = async () => {
       try {
-        // Gunakan instance tmdb di sini
-        const responseDariNews = await news.get(
-          // Nah di sini kita tidak perlu menuliskan terlalu panjang lagi
+        const responseFromNews = await News.get(
           "/api/games"
         );
-        // Jangan lupa set statenya
-        // Perhatikan di sini responseDariTMDB ada .data (response schema axios)
-        setBerita(responseDariNews.data);
+
+        setNews(responseFromNews.data);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchDataBerita();
+    fetchNewsData();
   }, []);
 
   return (
     <Carousel>
-      {berita.slice(-5).map((berita) => {
+      {news.slice(-6).map((news) => {
         return (
           <Paper>
-            <Card sx={{ display: "flex" }}>
+            <Card sx={{ display: "flex"}}>
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
-                  marginRight: "-100%",
-                  objectFit: "cover",
-                  objectPosition: " center",
-                  height: "25em",
+                  width: "80%",
+                  objectFit: "initial",
+                  objectPosition: "left",
+                  height: "20em",
+                  imageResolution: "1080px"
                 }}
-                image={berita.thumb}
-                alt={berita.title}
+                image={news.thumb}
+                alt={news.title}
               />
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  maxWidth: "50%",
+                  flexDirection: "",
+                  maxWidth: "60%",
                   paddingTop: "5em",
-                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  backgroundColor: "rgba(255, 153, 51, 0.6)",
                   color: "white",
-                  height: "20em",
+                  height: "15em",
                 }}
               >
-                <CardContent sx={{ flex: "1 0 auto" }}>
-                  <Typography variant="h5" sx={{ marginBottom: "1em" }}>
-                    {berita.title}
+                <CardContent sx={{ flex: "0 0 1m", position: "right"}}>
+                  <Typography variant="h5" sx={{ marginBottom: "2em", marginTop: "-2em" }}>
+                    {news.title}
                   </Typography>
-                  <Typography>{berita.desc.substring(0, 250)}...</Typography>
-                  <Typography>{berita.time}</Typography>
-
+                  <Typography marginBottom={4}>{news.desc.substring(0, 200)}</Typography>
+                  <CardActions sx={{ textAlign: "center", alignContent: "center" }}>
+                  <Button size="small" variant="outlined" position="center">
+                  {" "}
+                      <Link
+                        style={{ textDecoration: "none" , display: "flex", position: "right"}}
+                        to={`/detail/${news.key}`}
+                      >
+                        Read More 
+                      </Link>
+                    </Button>
+                  </CardActions>
                 </CardContent>
               </Box>
             </Card>

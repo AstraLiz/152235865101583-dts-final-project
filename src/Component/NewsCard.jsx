@@ -2,34 +2,25 @@ import {
     Box,
     CardContent,
     CardMedia,
-    Divider,
     Paper,
     Typography,
   } from "@mui/material";
   import React from "react";
+  import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+  import Link from '@mui/material/Link';
   
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { Link } from "react-router-dom";
-
   export default function NewsCard(props) {
-    const listItems = props.berita.content;
+    const listItems = props.news.content;
     return (
       <div>
-        <Paper sx={{ backgroundColor: "black", height: "auto" }}>
-          <CardMedia
-            component="img"
-            sx={{
-              width: "100%",
-              objectFit: "cover",
-              objectPosition: " center",
-              height: "25em",
-            }}
-            image={props.berita?.content?.[0] !== "" ? props.berita?.content?.[0] : props.berita.thumb}
-            alt={props.berita.title}
-          />
+        <Paper sx={{ backgroundImage: `url("https://wallpaper.dog/large/526267.jpg")`,
+          objectPosition: " center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover"}}>
           <Box
             sx={{
               display: "flex",
@@ -38,16 +29,56 @@ import { Link } from "react-router-dom";
               borderTopRightRadius: "15em",
             }}
           >
-            <Paper elevation={3} sx={{ margin: "1em" }}>
-              <CardContent sx={{ textAlign: "left", padding: "1em 5em 0em 5em" }}>
-                <Typography variant="h4">{props.berita.title}</Typography>
-                <Typography variant="body1">{props.berita.date}</Typography>
+
+            <Paper elevation={3} sx={{ marginTop: "2em", marginLeft: "7em", marginBottom: "3em" }}>
+            <Box
+              sx={{
+              paddingTop: 5,
+              paddingLeft: 5,
+              alignItems: 'left',
+              color: "red"
+              }}
+            >
+
+          <Link href="/" 
+            style={{
+              textDecoration: "none",
+              color: "black",
+              display: "flex",
+              fontFamily: "Roboto",
+              fontSize: 20
+            }}>
+
+
+            <ArrowBackIcon 
+             sx={{
+              marginRight: 10,
+              position: "center"
+              }}>
+              </ArrowBackIcon>
+              </Link>
+          </Box>
+              <CardContent sx={{ textAlign: "justify", padding: "1em 5em 0em 5em" }}>
+              <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              objectFit: "contain",
+              objectPosition: " center",
+              height: "20em",
+              marginBottom: "3em"
+            }}
+            image={props.news?.content?.[0] !== "" ? props.news?.content?.[0] : props.news.thumb}
+            alt={props.news.title}
+          />
+                <Typography variant="h4" marginBottom={"1em"}>{props.news.title}</Typography>
+                <Typography variant="body1">{props.news.date}</Typography>
                 <Typography variant="body1">
-                  Penulis : {props.berita.author}
+                  Writter : {props.news.author}
                 </Typography>
                 <br />
                 <br />
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle2" marginBottom={"2em"}>
                   {listItems}
                 </Typography>
                 

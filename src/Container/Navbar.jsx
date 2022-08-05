@@ -2,8 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../App/firebase";
-import { userLogout } from "../App/firebase";
+import { auth, userLogout } from "../App/firebase";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,16 +16,43 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import ToggleColorMode from "../Component/DarkMode.jsx"
 
-import { Home, LoginOutlined, Newspaper } from "@mui/icons-material";
+import Splash from "../Component/SplashScreen"
+import {useState} from "react";
+import { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 
-const pages = ["Products", "Pricing", "Blog"];
+import Logo from "../Asset/Game-flash.svg"
+
+import { Home, LoginOutlined } from "@mui/icons-material";
+
+const LightTheme = {
+  backgroundColor: "white",
+  color: "white"
+}
+
+const DarkTheme = {
+  backgroundColor:"black",
+  color: "black"
+}
+
+const themes = {
+  light: LightTheme,
+  dark: DarkTheme
+
+}
+
+const Page = styled.div`
+  backgroundColor: ${props => props.theme.backgroundColor};
+  transition: all .5s ease;
+`;
 
 export default function Navbar() {
+  const [theme, setTheme] = useState("light")
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const buttonLogoutOnClickHandler = async () => {
-    // Kita akan memanggil fungsi keluarDariApps di sini
     await userLogout();
     navigate("/");
   };
@@ -49,32 +75,22 @@ export default function Navbar() {
   };
 
   return (
+    <ThemeProvider theme={themes[theme]}>
     <AppBar
-      position="absolute"
-      sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }}
+      position="sticky"
+      sx={{ backgroundColor: "inherit" }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecorationColor: " none",
-              textDecorationLine: "none",
+        <Toolbar disableGutters sx={{height: 80}}>
+          <img 
+            style={{
+              height: 80,
+              width: 200,
+              display: "flex",
+              borderRightRadius: 500
             }}
-          >
-            Game Flash
-          </Typography>
-
+            src={Logo} alt="Logo"
+            />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -117,33 +133,35 @@ export default function Navbar() {
                       textDecorationColor: "none",
                       color: "black",
                       textDecorationLine: "none",
-                      fontFamily: "monospace",
+                      fontFamily: "Roboto",
                     }}
                   >
                     Home
                   </Typography>
                 </Link>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link
+              <Link
                   to="/search"
                   sx={{
                     textDecorationColor: " none",
                     textDecorationLine: "none",
                   }}
                 >
+              <MenuItem onClick={handleCloseNavMenu}>
+                
                   <Typography
                     sx={{
                       textDecorationColor: "none",
                       color: "black",
                       textDecorationLine: "none",
-                      fontFamily: "monospace",
+                      fontFamily: "Roboto",
                     }}
                   >
                     Cari Berita
                   </Typography>
-                </Link>
+                
               </MenuItem>
+              </Link>
             </Menu>
           </Box>
           <Link to="/">
@@ -157,7 +175,7 @@ export default function Navbar() {
                 mr: 2,
                 display: { xs: "none", md: "none" },
                 flexGrow: 1,
-                fontFamily: "monospace",
+                fontFamily: "Roboto",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
@@ -167,11 +185,17 @@ export default function Navbar() {
               Game Flash
             </Typography>
           </Link>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            flex: 6
+            }}>
             <Button
               onClick={handleCloseNavMenu}
               sx={{
                 my: 2,
+                ml: 8,
                 color: "white",
                 display: "block",
                 textDecorationColor: " none",
@@ -180,6 +204,7 @@ export default function Navbar() {
             >
               <Link
                 to="/"
+                style={{textDecoration: "none"}}
                 sx={{
                   textDecorationColor: " none",
                   textDecorationLine: "none",
@@ -190,13 +215,15 @@ export default function Navbar() {
                     textDecorationColor: "none",
                     color: "black",
                     textDecorationLine: "none",
-                    fontFamily: "monospace",
+                    fontFamily: "Helvetica",
+                    fontSize: 20
                   }}
                 >
                   Home
                 </Typography>
               </Link>
             </Button>
+
             <Button
               onClick={handleCloseNavMenu}
               sx={{
@@ -208,7 +235,8 @@ export default function Navbar() {
               }}
             >
               <Link
-                to="/search"
+                to="#"
+                style={{textDecoration: "none"}}
                 sx={{
                   textDecorationColor: " none",
                   textDecorationLine: "none",
@@ -219,15 +247,82 @@ export default function Navbar() {
                     textDecorationColor: "none",
                     color: "black",
                     textDecorationLine: "none",
-                    fontFamily: "monospace",
+                    fontFamily: "Helvetica",
+                    fontSize: 20
                   }}
                 >
-                  Cari Berita
+                  Reviews
                 </Typography>
               </Link>
             </Button>
+
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                textDecorationColor: " none",
+                textDecorationLine: "none",
+              }}
+            >
+              <Link
+                to="#"
+                style={{textDecoration: "none"}}
+                sx={{
+                  textDecorationColor: " none",
+                  textDecorationLine: "none",
+                }}
+              >
+                <Typography
+                  sx={{
+                    textDecorationColor: "none",
+                    color: "black",
+                    textDecorationLine: "none",
+                    fontFamily: "Helvetica",
+                    fontSize: 20
+                  }}
+                >
+                  About me
+                </Typography>
+              </Link>
+            </Button>
+
+            <Link
+                to="/search"
+                style={{textDecoration: "none"}}
+                sx={{
+                  textDecorationColor: " none",
+                  textDecorationLine: "none",
+                }}
+              >
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                textDecorationColor: " none",
+                textDecorationLine: "none",
+              }}
+            >
+                <Typography
+                  sx={{
+                    textDecorationColor: "none",
+                    color: "black",
+                    textDecorationLine: "none",
+                    fontFamily: "Helvetica",
+                    fontSize: 20
+                  }}
+                >
+                  Search
+                </Typography>
+              
+            </Button>
+            </Link>
           </Box>
 
+          <Splash theme = {theme} setTheme={setTheme} />
           <Box sx={{ flexGrow: 0 }}>
             {user != null ? (
               <div
@@ -237,36 +332,44 @@ export default function Navbar() {
                   alignItems: "center",
                 }}
               >
-                <Typography sx={{ marginRight: "1em" }}>
+                <Typography sx={{ marginRight: "10em" }}>
                   {user.email}
                 </Typography>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt="Remy Sharp"
+                      alt="Arnold"
                       src="https://temank3.id/public/images/default.jpg"
                     />
                   </IconButton>
                 </Tooltip>{" "}
               </div>
             ) : (
+              <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 1, mb: 1, length: 200, width: 100, paddingLeft: -10, backgroundColor: "rgb(0, 206, 209)"}}
+          >
               <Link
                 to="/Login"
                 style={{
                   textDecoration: "none",
-                  color: "black",
+                  color: "white",
                   display: "flex",
+                  fontFamily: "Roboto",
+                  fontSize: 20
                 }}
               >
                 <Typography>Login</Typography>
-                <Tooltip title="Open settings">
+                <Tooltip>
                   <LoginOutlined onClick={handleOpenUserMenu} sx={{ p: 0 }} />
                 </Tooltip>
               </Link>
+              </Button>
             )}
 
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: "4px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -291,7 +394,7 @@ export default function Navbar() {
                       textDecorationColor: "none",
                       color: "white",
                       textDecorationLine: "none",
-                      fontFamily: "monospace",
+                      fontFamily: "Roboto",
                     }}
                   >
                     <Button onClick={buttonLogoutOnClickHandler}>Logout</Button>
@@ -305,5 +408,6 @@ export default function Navbar() {
         </Toolbar>
       </Container>
     </AppBar>
+    </ThemeProvider>
   );
 }

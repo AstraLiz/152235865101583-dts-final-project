@@ -8,30 +8,26 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  FilledInput,
   FormControl,
   InputAdornment,
   Paper,
   Typography,
 } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
-
-import InputBase from "@mui/material/InputBase";
 
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
 
-export default function CardWithSearch() {
+import SearchAnim from "../Asset/Searching.gif"
+
+export default function Search() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [q, setQ] = useState("");
   const [searchParam] = useState(["author", "title"]);
-  const [filterParam, setFilterParam] = useState(["All"]);
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
+  const [filterParam] = useState(["All"]);
+
   useEffect(() => {
     fetch("https://the-lazy-media-api.vercel.app/api/games")
       .then((res) => res.json())
@@ -40,9 +36,7 @@ export default function CardWithSearch() {
           setIsLoaded(true);
           setItems(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
+
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -51,18 +45,13 @@ export default function CardWithSearch() {
   }, []);
   function search(items) {
     return items.filter((item) => {
-      /* 
-// in here we check if our region is equal to our c state
-// if it's equal to then only return the items that match
-// if not return All the countries
-        */
-      if (item.title === filterParam) {
+      if (item.title == filterParam) {
         return searchParam.some((newItem) => {
           return (
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
           );
         });
-      } else if (filterParam === "All") {
+      } else if (filterParam == "All") {
         return searchParam.some((newItem) => {
           return (
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
@@ -74,22 +63,27 @@ export default function CardWithSearch() {
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (<img 
+      style={{
+      backgroundSize: "cover"
+      }}
+      src={SearchAnim} alt="SearchAnim"/>)
   } else {
     return (
       <div
         style={{
-          backgroundImage: `url("https://wallpapercave.com/wp/wp9378601.jpg")`,
+          backgroundImage: `url("https://wallpaper.dog/large/526267.jpg")`,
+          backgroundSize: "cover"
         }}
       >
         <Navbar />
         <div style={{ padding: "5em 1em 1em 1em" }}>
-          <Paper sx={{ padding: "1em",backgroundColor: "rgba(255, 255, 255, 0.7)" }}>
-            <Box sx={{ margin: "1em" }}>
+          <Paper sx={{ padding: "2em",backgroundColor: "rgba(255, 255, 255, 0.6)" }}>
+            <Box sx={{ margin: "0.5em" }}>
               <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                 <TextField
                   id="outlined-basic"
-                  label="Cari Judul Berita"
+                  label="Find News"
                   variant="outlined"
                   InputProps={{
                     startAdornment: (
@@ -133,7 +127,7 @@ export default function CardWithSearch() {
                             style={{ textDecoration: "none" }}
                             to={`/detail/${item.key}`}
                           >
-                            Selengkapnya
+                            Read More
                           </Link>
                         </Button>
                       </CardActions>

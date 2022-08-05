@@ -3,16 +3,21 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Links, useNavigate } from 'react-router-dom';
 
 import { auth } from '../App/firebase';
 
@@ -39,8 +44,7 @@ const Register = () => {
       const password = data.get('password');
 
       try {
-          const {user} = await createUserWithEmailAndPassword(auth, email, password);
-          console.log(user);
+          await createUserWithEmailAndPassword(auth, email, password);
           navigate("/");
       } catch (error) {
           setErrorMessage(error.message);
@@ -56,7 +60,7 @@ const Register = () => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random/?gaming)',
+            backgroundImage: 'url(https://source.unsplash.com/random)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -78,7 +82,6 @@ const Register = () => {
           color: "red"
           }}
           >
-
             <Link href="/" 
             style={{
               textDecoration: "none",
@@ -88,10 +91,12 @@ const Register = () => {
               fontSize: 20
             }}>
 
+
             <ArrowBackIcon sx={{
               marginRight: 6
               }} />
               </Link>
+
         </Box>
           <Box
             sx={{
@@ -129,7 +134,6 @@ const Register = () => {
                 id="password"
                 autoComplete="current-password"
               />
-              <Typography color="red">{errorMessage}</Typography>
               <Button
                 type="submit"
                 fullWidth
@@ -139,8 +143,15 @@ const Register = () => {
                 Register
               </Button>
               <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2"
+                  sx={{paddingRight: 20}}>
+                    Forgot password?
+                  </Link>
+                </Grid>
                 <Grid item>
-                  <Link href="/login" variant="body2">
+                  <Link href="/login" variant="body2"
+                  sx={{paddingRight: 2}}>
                     {"Login Instead"}
                   </Link>
                 </Grid>
